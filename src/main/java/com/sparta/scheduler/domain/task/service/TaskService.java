@@ -4,14 +4,8 @@ import com.sparta.scheduler.domain.task.dto.TaskRequestDto;
 import com.sparta.scheduler.domain.task.dto.TaskResponseDto;
 import com.sparta.scheduler.domain.task.entity.Task;
 import com.sparta.scheduler.domain.task.repository.TaskRepository;
-import com.sparta.scheduler.domain.user.entity.User;
-import com.sparta.scheduler.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,51 +13,36 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TaskService {
 
-    private final TaskRepository taskRep;
-    private final UserRepository userRep;
+    private final TaskRepository repository;
 
-    @Transactional
-    public TaskResponseDto createTask(
-            TaskRequestDto TaskReq, Long userId) {
-        User user = userRep.findByUser(userId);
-        Task task = new Task();
-        task.init(TaskReq, user);
-        taskRep.save(task);
+    public TaskResponseDto createTask(TaskRequestDto requestDto) {
+        Task task = repository.save(Task.from(requestDto));
         return task.to();
     }
 
+    public List<TaskResponseDto> getTaskList() {
+        return repository.findAll().stream().map(TaskResponseDto::new).toList();
+    }
 
-    public TaskResponseDto getOneTask(Long id, Long userId) {
-        User user = userRep.findByUser(userId);
-        Task task = taskRep.findByTask(id);
+    public TaskResponseDto getTask(Long id) {
+        Task task = findByTask(id);
         return task.to();
     }
 
-
-    public Page<TaskResponseDto> getAllTask(
-            Long userId, Pageable pageable
-    ) {
-        User user = userRep.findByUser(userId);
-        Page<Task> tasks = taskRep.findAllByUserId(userId, pageable);
-        return tasks
-                .map(Task::to);
+    public void updateTask(Long id, TaskRequestDto requestDto) {
+        Task task = findByTask(id);
+        task.init(requestDto);
+        repository.saveAndFlush(task);
     }
 
-    @Transactional
-    public TaskResponseDto updateTask(
-            Long id, Long userId, TaskRequestDto req
-    ) {
-        User user = userRep.findByUser(userId);
-        Task task = taskRep.findByTask(id);
-        task.init(req, user);
-        task.updateDate(req);
-        return task.to();
+    public void deleteTask(Long id) {
+        findByTask(id);
+        repository.deleteById(id);
     }
 
-    @Transactional
-    public void deleteTask(Long id, Long userId) {
-        User user = userRep.findByUser(userId);
-        Task task = taskRep.findByTask(id);
-        taskRep.deleteById(id);
+    private Task findByTask(Long id) {
+        return repository.findById(id).orElseThrow(() ->
+                new RuntimeException("해당 id를 찾을 수 없습니다"));
     }
+
 }

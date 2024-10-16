@@ -1,65 +1,60 @@
 package com.sparta.scheduler.domain.task.entity;
 
-import com.sparta.scheduler.domain.comment.entity.Comment;
-import com.sparta.scheduler.domain.common.timestamp.Timestamped;
 import com.sparta.scheduler.domain.task.dto.TaskRequestDto;
 import com.sparta.scheduler.domain.task.dto.TaskResponseDto;
-import com.sparta.scheduler.domain.user.entity.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@NoArgsConstructor
+
+@Data
 @Entity
-public class Task extends Timestamped {
+@Table(name = "task")
+public class Task extends Timestamped{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @Column
+    @Column()
     private String title;
-
-    @Column
+    @Column()
     private String content;
+    @Column
+    private String userName;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)
+
+    @OneToMany(mappedBy = "task",cascade = CascadeType.PERSIST)
     private List<Comment> comments = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "task_user",
-            joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> users = new ArrayList<>();
 
-    public void init(TaskRequestDto taskRequestDto, User user) {
-        this.user = user;
-        this.title = taskRequestDto.getTitle();
-        this.content = taskRequestDto.getContent();
+    public static Task from(TaskRequestDto requestDto) {
+        Task task = new Task();
+        task.init(requestDto);
+        return task;
+    }
+
+    public void init(TaskRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.userName = requestDto.getUserName();
+        setCreatedAt(requestDto.getCreatedAt());
+        setUpdatedAt(requestDto.getUpdatedAt());
+        setComments(requestDto.getComments());
     }
 
     public TaskResponseDto to() {
         return new TaskResponseDto(
-                id,
-                user.getId(),
-                title,
-                content,
-                comments.stream().map(Comment::to).toList(),
-                getCreatedAt(),
-                getUpdatedAt()
+                this.id,
+                this.title,
+                this.content,
+                this.userName,
+                this.getCreatedAt(),
+                this.getUpdatedAt(),
+                this.getComments()
         );
     }
 
-    public void updateDate(TaskRequestDto req) {
-        this.title = req.getTitle();
-        this.content = req.getContent();
-    }
+
 }
