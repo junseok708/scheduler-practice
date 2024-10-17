@@ -5,9 +5,6 @@ import com.sparta.scheduler.domain.task.dto.CommentResponseDto;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 @Data
 @Entity
 @Table(name = "comment")
@@ -22,9 +19,8 @@ public class Comment extends Timestamped  {
 
 
     @ManyToOne
-    @JoinColumn(name="task_id")
-    private Task task;
-
+    @JoinColumn(name="taskId")
+    private Task task = new Task();
 
     public static Comment from(CommentRequestDto requestDto) {
         Comment comment = new Comment();
@@ -37,6 +33,7 @@ public class Comment extends Timestamped  {
         this.userName = requestDto.getUserName();
         setCreatedAt(requestDto.getCreatedAt());
         setUpdatedAt(requestDto.getUpdatedAt());
+        this.task.setId(requestDto.getTaskId()) ;
 
     }
 
@@ -46,7 +43,8 @@ public class Comment extends Timestamped  {
                 this.content,
                 this.userName,
                 this.getCreatedAt(),
-                this.getUpdatedAt()
+                this.getUpdatedAt(),
+                this.task.getId()
 
         );
     }

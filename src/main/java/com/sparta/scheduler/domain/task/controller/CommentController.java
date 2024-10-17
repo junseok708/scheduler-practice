@@ -19,29 +19,32 @@ public class CommentController {
     private final CommentService commentService;
 
 
-    @PostMapping("/Comment")
+    @PostMapping("/comment")
     public CommentResponseDto createComment(@RequestBody CommentRequestDto requestDto) {
         return commentService.createComment(requestDto);
     }
 
-    @GetMapping("/Comment")
+    @GetMapping("/comment")
     public List<CommentResponseDto> getTasksList() {
         return commentService.getCommentList();
     }
 
-    @GetMapping("/Comment/{id}")
+    @GetMapping("/comment/{id}")
     public CommentResponseDto getcommentList(@PathVariable Long id) {
         return commentService.getComment(id);
     }
 
-    @PutMapping("/Comment/{id}")
+    @PutMapping("/comment/{id}")
     public void updateTask(@PathVariable Long id, @RequestBody CommentRequestDto requestDto) {
         commentService.updateTask(id, requestDto);
     }
 
-    @DeleteMapping("/Comment/{id}")
+    @DeleteMapping("/comment/{id}")
     public void deleteTask(@PathVariable Long id) {
         commentService.deleteComment(id);
     }
+
+
+
 
 }

@@ -14,6 +14,7 @@ public class CommentResponseDto {
     private String userName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Long taskId;
 
 
     public CommentResponseDto(Comment comment) {
@@ -22,6 +23,7 @@ public class CommentResponseDto {
         this.userName = comment.getUserName();
         this.createdAt = comment.getCreatedAt();
         this.updatedAt = comment.getUpdatedAt();
+        this.taskId = comment.getTask().getId();
 
     }
 }

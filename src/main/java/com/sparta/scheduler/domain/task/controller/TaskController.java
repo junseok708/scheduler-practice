@@ -6,6 +6,7 @@ import com.sparta.scheduler.domain.task.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
@@ -22,8 +23,8 @@ public class TaskController {
     }
 
     @GetMapping()
-    public List<TaskResponseDto> getTasksList() {
-        return taskService.getTaskList();
+    public List<TaskResponseDto> getTasksList(Pageable pageable) {
+        return taskService.getTaskList(pageable);
     }
 
     @GetMapping("/{id}")
@@ -40,5 +41,7 @@ public class TaskController {
     public void deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
     }
+
+
 
 }

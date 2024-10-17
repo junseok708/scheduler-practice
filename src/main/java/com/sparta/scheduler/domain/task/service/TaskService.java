@@ -2,11 +2,13 @@ package com.sparta.scheduler.domain.task.service;
 
 import com.sparta.scheduler.domain.task.dto.TaskRequestDto;
 import com.sparta.scheduler.domain.task.dto.TaskResponseDto;
+
 import com.sparta.scheduler.domain.task.entity.Task;
 import com.sparta.scheduler.domain.task.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @Service
@@ -15,14 +17,16 @@ public class TaskService {
 
     private final TaskRepository repository;
 
+
     public TaskResponseDto createTask(TaskRequestDto requestDto) {
         Task task = repository.save(Task.from(requestDto));
         return task.to();
     }
 
-    public List<TaskResponseDto> getTaskList() {
+    public List<TaskResponseDto> getTaskList(Pageable pageable) {
         return repository.findAll().stream().map(TaskResponseDto::new).toList();
     }
+
 
     public TaskResponseDto getTask(Long id) {
         Task task = findByTask(id);
@@ -44,5 +48,6 @@ public class TaskService {
         return repository.findById(id).orElseThrow(() ->
                 new RuntimeException("해당 id를 찾을 수 없습니다"));
     }
+
 
 }
