@@ -4,6 +4,7 @@ import com.sparta.scheduler.domain.task.dto.TaskRequestDto;
 import com.sparta.scheduler.domain.task.dto.TaskResponseDto;
 import com.sparta.scheduler.domain.task.service.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Pageable;
@@ -23,9 +24,11 @@ public class TaskController {
     }
 
     @GetMapping()
-    public List<TaskResponseDto> getTasksList(Pageable pageable) {
-        return taskService.getTaskList(pageable);
+    public List<TaskResponseDto> getTasksList() {
+        return taskService.getTaskList();
     }
+
+
 
     @GetMapping("/{id}")
     public TaskResponseDto getTasksList(@PathVariable Long id) {

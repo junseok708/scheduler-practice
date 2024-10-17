@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    Page<Task> findByTaskOrderByIdDesc(Long id, Pageable pageable);
+    Page<Task> findAll(Pageable pageable);
+
 
 }

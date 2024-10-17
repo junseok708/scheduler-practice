@@ -6,9 +6,11 @@ import com.sparta.scheduler.domain.task.dto.TaskResponseDto;
 import com.sparta.scheduler.domain.task.entity.Task;
 import com.sparta.scheduler.domain.task.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
+
 import java.util.List;
 
 @Service
@@ -18,12 +20,17 @@ public class TaskService {
     private final TaskRepository repository;
 
 
+    public Page<Task> findAllPaging(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+
     public TaskResponseDto createTask(TaskRequestDto requestDto) {
         Task task = repository.save(Task.from(requestDto));
         return task.to();
     }
 
-    public List<TaskResponseDto> getTaskList(Pageable pageable) {
+    public List<TaskResponseDto> getTaskList() {
         return repository.findAll().stream().map(TaskResponseDto::new).toList();
     }
 

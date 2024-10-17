@@ -23,11 +23,10 @@ public class CommentService {
     public CommentResponseDto createComment(CommentRequestDto requestDto) {
         Task task = taskRepository.findById(requestDto.getTaskId()).orElseThrow(()
                 -> new RuntimeException("존재하지 않는 일정입니다"));
-        Comment comment = new Comment();
+        Comment comment = Comment.from(requestDto);
         comment.setTask(task);
-        comment = comment.from(requestDto);
-        comment = repository.save(comment);
-        return comment.to();
+        Comment commentSave = repository.save(comment);
+        return commentSave.to();
     }
 
     public List<CommentResponseDto> getCommentList() {
