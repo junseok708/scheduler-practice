@@ -3,6 +3,7 @@ package com.sparta.scheduler.domain.comment.controller;
 import com.sparta.scheduler.domain.comment.dto.CommentRequestDto;
 import com.sparta.scheduler.domain.comment.dto.CommentResponseDto;
 import com.sparta.scheduler.domain.comment.service.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto> createComment(
             @PathVariable Long taskId,
             @PathVariable Long userId,
-            @RequestBody CommentRequestDto commentRequestDto
+            @RequestBody @Valid CommentRequestDto commentRequestDto
     ) {
         try {
             return ResponseEntity

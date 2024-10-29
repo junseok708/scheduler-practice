@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class User extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @Column
     private String name;
 
@@ -27,6 +29,7 @@ public class User extends Timestamped {
 
     @Column
     private String password;
+
 
     @ManyToMany(mappedBy = "users")
     private List<Task> tasks = new ArrayList<>();

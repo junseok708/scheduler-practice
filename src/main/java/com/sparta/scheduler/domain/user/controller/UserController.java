@@ -1,8 +1,10 @@
 package com.sparta.scheduler.domain.user.controller;
 
+import com.sparta.scheduler.domain.common.exception.ResponseException;
 import com.sparta.scheduler.domain.user.dto.UserRequestDto;
 import com.sparta.scheduler.domain.user.dto.UserResponseDto;
 import com.sparta.scheduler.domain.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,72 +21,50 @@ public class UserController {
 
     @PostMapping()
     public ResponseEntity<UserResponseDto> createUser(
-            @RequestBody UserRequestDto userRequestDto) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(userService.createUser(userRequestDto));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .build();
-        }
+            @RequestBody @Valid UserRequestDto userRequestDto) throws ResponseException {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(userService.createUser(userRequestDto));
+
     }
 
     @GetMapping("/userId={userId}")
     public ResponseEntity<UserResponseDto> getOneUser(
-            @PathVariable Long userId) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(userService.getOneUser(userId));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .build();
-        }
+            @PathVariable Long userId) throws ResponseException {
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userService.getOneUser(userId));
     }
 
     @GetMapping("/userList")
-    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(userService.getAllUsers());
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .build();
-        }
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() throws ResponseException {
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.getAllUsers());
+
     }
 
     @PutMapping("/userId={userId}")
     public ResponseEntity<UserResponseDto> updateUser(
             @PathVariable Long userId,
-            @RequestBody UserRequestDto userRequestDto) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(userService.updateUser(userRequestDto, userId));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .build();
-        }
+            @RequestBody @Valid UserRequestDto userRequestDto) throws ResponseException {
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.updateUser(userRequestDto, userId));
+
     }
 
     @DeleteMapping("/userId={userId}")
     public ResponseEntity<Void> deleteUser(
-            @PathVariable Long userId) {
+            @PathVariable Long userId) throws ResponseException {
+
         userService.deleteUser(userId);
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .build();
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .build();
-        }
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
+
     }
 
 }

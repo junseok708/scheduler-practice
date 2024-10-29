@@ -4,9 +4,8 @@ import com.sparta.scheduler.domain.task.dto.TaskRequestDto;
 import com.sparta.scheduler.domain.task.dto.TaskResponseDto;
 import com.sparta.scheduler.domain.task.dto.TaskResponsePage;
 import com.sparta.scheduler.domain.task.service.TaskService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,7 @@ public class TaskController {
 
     @PostMapping()
     public ResponseEntity<TaskResponseDto> createTask(
-            @RequestBody TaskRequestDto req,
+            @RequestBody @Valid TaskRequestDto req,
             @PathVariable Long userId
     ) {
         try {
@@ -85,7 +84,7 @@ public class TaskController {
     public ResponseEntity<TaskResponseDto> updateTask(
             @PathVariable Long id,
             @PathVariable Long userId,
-            @RequestBody TaskRequestDto req) {
+            @RequestBody @Valid TaskRequestDto req) {
         try {
             return ResponseEntity
                     .status(HttpStatus.OK)
