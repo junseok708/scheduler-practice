@@ -51,8 +51,8 @@ public class UserService {
 
     @Transactional
     public void deleteUser(Long userId) {
-        User user = userRep.findByUser(userId);
-        userRep.deleteById(user.getId());
+        userRep.findByUser(userId);
+        userRep.deleteById(userId);
     }
 
 }

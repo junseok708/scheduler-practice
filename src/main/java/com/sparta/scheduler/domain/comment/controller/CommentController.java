@@ -35,7 +35,7 @@ public class CommentController {
 
     }
 
-    @PutMapping("/{commentId}")
+    @PutMapping("={commentId}")
     public ResponseEntity<CommentResponseDto> updateComment(
             @RequestBody CommentRequestDto commentReq,
             @PathVariable Long userId,
@@ -55,7 +55,7 @@ public class CommentController {
 
     }
 
-    @DeleteMapping("/{commentId}")
+    @DeleteMapping("={commentId}")
     public ResponseEntity<Void> deleteComment(
             @PathVariable Long taskId,
             @PathVariable Long userId,

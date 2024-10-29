@@ -25,6 +25,9 @@ public class User extends Timestamped {
     @Column
     private String email;
 
+    @Column
+    private String password;
+
     @ManyToMany(mappedBy = "users")
     private List<Task> tasks = new ArrayList<>();
 
@@ -32,6 +35,7 @@ public class User extends Timestamped {
     public void init(UserRequestDto userRequestDto) {
         this.name = userRequestDto.getName();
         this.email = userRequestDto.getEmail();
+        this.password = userRequestDto.getPassword();
     }
 
 
@@ -40,6 +44,7 @@ public class User extends Timestamped {
                 id,
                 name,
                 email,
+                password,
                 getCreatedAt(),
                 getUpdatedAt()
         );
@@ -48,5 +53,6 @@ public class User extends Timestamped {
     public void updateDate(UserRequestDto req) {
         this.name = req.getName();
         this.email = req.getEmail();
+        this.password = req.getPassword();
     }
 }

@@ -31,7 +31,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/userId={userId}")
     public ResponseEntity<UserResponseDto> getOneUser(
             @PathVariable Long userId) {
         try {
@@ -44,7 +44,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/list")
+    @GetMapping("/userList")
     public ResponseEntity<List<UserResponseDto>> getAllUsers() {
         try {
             return ResponseEntity
@@ -57,7 +57,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{userId}")
+    @PutMapping("/userId={userId}")
     public ResponseEntity<UserResponseDto> updateUser(
             @PathVariable Long userId,
             @RequestBody UserRequestDto userRequestDto) {
@@ -72,7 +72,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/userId={userId}")
     public ResponseEntity<Void> deleteUser(
             @PathVariable Long userId) {
         userService.deleteUser(userId);
