@@ -13,7 +13,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
         return findById(id).orElseThrow(() ->
                 new IllegalAccessError("존재하지 않는 회원입니다"));
     }
-
     List<Task> findAllByUserId(Long userId);
 
     Page<Task> findAllByUserId(Long userId, Pageable pageable);

@@ -2,6 +2,7 @@ package com.sparta.scheduler.domain.task.controller;
 
 import com.sparta.scheduler.domain.task.dto.TaskRequestDto;
 import com.sparta.scheduler.domain.task.dto.TaskResponseDto;
+import com.sparta.scheduler.domain.task.dto.TaskResponsePage;
 import com.sparta.scheduler.domain.task.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/scheduler/{userId}")
+@RequestMapping("/api/scheduler/userId={userId}")
 public class TaskController {
 
     private final TaskService taskService;
@@ -35,7 +36,7 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/taskId={id}")
     public ResponseEntity<TaskResponseDto> getOneTask(
             @PathVariable Long id,
             @PathVariable Long userId) {
@@ -50,15 +51,16 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<List<TaskResponseDto>> getAllTasks(
+    @GetMapping("/taskPage")
+    public ResponseEntity<TaskResponsePage> getTasksPage(
             @PathVariable Long userId,
-            @PageableDefault(size = 10)
-            Pageable pageable) {
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size,
+            @RequestParam(required = false, defaultValue = "updatedAt") String criteria) {
         try {
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(taskService.getAllTask(userId, pageable).getContent());
+                    .body(taskService.getTasksWithPaging(userId, page, size,criteria));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.NO_CONTENT)
@@ -66,7 +68,20 @@ public class TaskController {
         }
     }
 
-    @PutMapping("/{id}")
+    @GetMapping("/taskList")
+    public ResponseEntity<List<TaskResponseDto>> getAllTasks(@PathVariable Long userId) {
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(taskService.getAllTask(userId));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.NO_CONTENT)
+                    .build();
+        }
+    }
+
+    @PutMapping("/taskId={id}")
     public ResponseEntity<TaskResponseDto> updateTask(
             @PathVariable Long id,
             @PathVariable Long userId,
@@ -83,7 +98,7 @@ public class TaskController {
 
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/taskId={id}")
     public ResponseEntity<Void> deleteTask(
             @PathVariable Long id,
             @PathVariable Long userId) {
