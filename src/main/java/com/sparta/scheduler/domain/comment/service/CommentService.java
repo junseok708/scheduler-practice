@@ -46,13 +46,11 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(
-            Long taskId,
-            Long userId,
-            Long commentId
+            Long taskId, Long userId, Long commentId
     ) {
         taskRep.findByTask(taskId);
         userRep.findByUser(userId);
         Comment comment = commentRep.findByComment(commentId);
-        commentRep.deleteById(comment.getId());
+        commentRep.delete(comment);
     }
 }

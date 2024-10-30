@@ -32,7 +32,8 @@ public class UserController {
     public ResponseEntity<UserResponseDto> getOneUser(
             @PathVariable Long userId) throws ResponseException {
 
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(userService.getOneUser(userId));
     }
 

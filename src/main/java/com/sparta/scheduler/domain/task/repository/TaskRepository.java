@@ -16,4 +16,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findAllByUserId(Long userId);
 
     Page<Task> findAllByUserId(Long userId, Pageable pageable);
+
+    void deleteByUserId(Long userId);
 }

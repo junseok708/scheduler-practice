@@ -36,14 +36,14 @@ public class TaskService {
 
 
     public TaskResponseDto getOneTask(Long id, Long userId) {
-        User user = userRep.findByUser(userId);
+        userRep.findByUser(userId);
         Task task = taskRep.findByTask(id);
         return task.to();
     }
 
 
     public List<TaskResponseDto> getAllTask(Long userId) {
-        User user = userRep.findByUser(userId);
+        userRep.findByUser(userId);
         List<Task> tasks = taskRep.findAllByUserId(userId);
         return tasks
                 .stream()
@@ -64,8 +64,8 @@ public class TaskService {
 
     @Transactional
     public void deleteTask(Long id, Long userId) {
-        User user = userRep.findByUser(userId);
-        Task task = taskRep.findByTask(id);
+        userRep.findByUser(userId);
+        taskRep.findByTask(id);
         taskRep.deleteById(id);
     }
 

@@ -56,28 +56,20 @@ public class TaskController {
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false, defaultValue = "updatedAt") String criteria) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(taskService.getTasksWithPaging(userId, page, size,criteria));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .build();
-        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(taskService.getTasksWithPaging(userId, page, size, criteria));
+
     }
 
     @GetMapping("/taskList")
     public ResponseEntity<List<TaskResponseDto>> getAllTasks(@PathVariable Long userId) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(taskService.getAllTask(userId));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .build();
-        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(taskService.getAllTask(userId));
+
     }
 
     @PutMapping("/taskId={id}")
@@ -85,15 +77,11 @@ public class TaskController {
             @PathVariable Long id,
             @PathVariable Long userId,
             @RequestBody @Valid TaskRequestDto req) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(taskService.updateTask(id, userId, req));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .build();
-        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(taskService.updateTask(id, userId, req));
+
 
     }
 
@@ -102,15 +90,11 @@ public class TaskController {
             @PathVariable Long id,
             @PathVariable Long userId) {
         taskService.deleteTask(id, userId);
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .build();
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_ACCEPTABLE)
-                    .build();
-        }
+
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
+
     }
 
 }

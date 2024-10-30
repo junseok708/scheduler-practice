@@ -31,7 +31,7 @@ public class User extends Timestamped {
     private String password;
 
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "users",fetch = FetchType.EAGER)
     private List<Task> tasks = new ArrayList<>();
 
 
