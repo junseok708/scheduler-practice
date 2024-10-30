@@ -3,6 +3,7 @@ package com.sparta.scheduler.domain.comment.controller;
 import com.sparta.scheduler.domain.comment.dto.CommentRequestDto;
 import com.sparta.scheduler.domain.comment.dto.CommentResponseDto;
 import com.sparta.scheduler.domain.comment.service.CommentService;
+import com.sparta.scheduler.domain.common.exception.ResponseException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,17 +23,12 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto> createComment(
             @PathVariable Long taskId,
             @PathVariable Long userId,
-            @RequestBody @Valid CommentRequestDto commentRequestDto
-    ) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(commentService.createComment(taskId, userId, commentRequestDto));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .build();
-        }
+            @RequestBody @Valid CommentRequestDto commentRequestDto) throws ResponseException {
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(commentService.createComment(taskId, userId, commentRequestDto));
+
 
     }
 
@@ -41,27 +37,18 @@ public class CommentController {
             @RequestBody CommentRequestDto commentReq,
             @PathVariable Long userId,
             @PathVariable Long taskId,
-            @PathVariable Long commentId
-    ) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(commentService.updateComment(commentReq, userId, taskId, commentId));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_ACCEPTABLE)
-                    .build();
-        }
+            @PathVariable Long commentId) throws ResponseException {
 
-
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(commentService.updateComment(commentReq, userId, taskId, commentId));
     }
 
     @DeleteMapping("={commentId}")
     public ResponseEntity<Void> deleteComment(
             @PathVariable Long taskId,
             @PathVariable Long userId,
-            @PathVariable Long commentId
-    ) {
+            @PathVariable Long commentId) throws ResponseException {
         commentService.deleteComment(taskId, userId, commentId);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)

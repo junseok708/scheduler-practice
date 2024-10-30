@@ -1,5 +1,6 @@
 package com.sparta.scheduler.domain.task.controller;
 
+import com.sparta.scheduler.domain.common.exception.ResponseException;
 import com.sparta.scheduler.domain.task.dto.TaskRequestDto;
 import com.sparta.scheduler.domain.task.dto.TaskResponseDto;
 import com.sparta.scheduler.domain.task.dto.TaskResponsePage;
@@ -22,32 +23,22 @@ public class TaskController {
     @PostMapping()
     public ResponseEntity<TaskResponseDto> createTask(
             @RequestBody @Valid TaskRequestDto req,
-            @PathVariable Long userId
-    ) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(taskService.createTask(req, userId));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_ACCEPTABLE)
-                    .build();
-        }
+            @PathVariable Long userId) throws ResponseException {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(taskService.createTask(req, userId));
+
     }
 
     @GetMapping("/taskId={id}")
     public ResponseEntity<TaskResponseDto> getOneTask(
             @PathVariable Long id,
-            @PathVariable Long userId) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(taskService.getOneTask(id, userId));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .build();
-        }
+            @PathVariable Long userId) throws ResponseException {
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(taskService.getOneTask(id, userId));
+
     }
 
     @GetMapping("/taskPage")
@@ -55,7 +46,7 @@ public class TaskController {
             @PathVariable Long userId,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
-            @RequestParam(required = false, defaultValue = "updatedAt") String criteria) {
+            @RequestParam(required = false, defaultValue = "updatedAt") String criteria) throws ResponseException {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -64,7 +55,8 @@ public class TaskController {
     }
 
     @GetMapping("/taskList")
-    public ResponseEntity<List<TaskResponseDto>> getAllTasks(@PathVariable Long userId) {
+    public ResponseEntity<List<TaskResponseDto>> getAllTasks(
+            @PathVariable Long userId) throws ResponseException {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -76,7 +68,7 @@ public class TaskController {
     public ResponseEntity<TaskResponseDto> updateTask(
             @PathVariable Long id,
             @PathVariable Long userId,
-            @RequestBody @Valid TaskRequestDto req) {
+            @RequestBody @Valid TaskRequestDto req) throws ResponseException {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -88,7 +80,7 @@ public class TaskController {
     @DeleteMapping("/taskId={id}")
     public ResponseEntity<Void> deleteTask(
             @PathVariable Long id,
-            @PathVariable Long userId) {
+            @PathVariable Long userId) throws ResponseException {
         taskService.deleteTask(id, userId);
 
         return ResponseEntity
