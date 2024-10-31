@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/scheduler/userId={userId}/taskId={taskId}/comment")
@@ -28,8 +26,6 @@ public class CommentController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(commentService.createComment(taskId, userId, commentRequestDto));
-
-
     }
 
     @PutMapping("={commentId}")

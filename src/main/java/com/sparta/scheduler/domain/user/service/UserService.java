@@ -1,9 +1,9 @@
 package com.sparta.scheduler.domain.user.service;
 
-import com.sparta.scheduler.domain.comment.repository.CommentRepository;
+import com.sparta.scheduler.domain.comment.service.CommentService;
+import com.sparta.scheduler.domain.common.exception.ExceptionMethod;
 import com.sparta.scheduler.domain.common.exception.ResponseException;
-import com.sparta.scheduler.domain.task.entity.Task;
-import com.sparta.scheduler.domain.task.repository.TaskRepository;
+import com.sparta.scheduler.domain.task.service.TaskService;
 import com.sparta.scheduler.domain.user.dto.UserRequestDto;
 import com.sparta.scheduler.domain.user.dto.UserResponseDto;
 import com.sparta.scheduler.domain.user.entity.User;
@@ -16,17 +16,18 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService extends ExceptionMethod {
 
     private final UserRepository userRep;
-    private final TaskRepository taskRep;
-    private final CommentRepository commentRep;
+    private final CommentService commentService;
+    private final TaskService taskService;
 
 
     public UserResponseDto createUser(
-            UserRequestDto userRequestDto) throws ResponseException {
+            UserRequestDto userReq) throws ResponseException {
+        isNull(userReq);
         User user = new User();
-        user.init(userRequestDto);
+        user.init(userReq);
         userRep.save(user);
         return user.to();
     }
@@ -36,7 +37,7 @@ public class UserService {
         return user.to();
     }
 
-    public List<UserResponseDto> getAllUsers() throws ResponseException{
+    public List<UserResponseDto> getAllUsers() throws ResponseException {
         List<User> users = userRep.findAll();
         return users
                 .stream()
@@ -44,22 +45,20 @@ public class UserService {
                 .toList();
     }
 
-
-    public UserResponseDto updateUser(UserRequestDto userReq, Long userId) throws ResponseException{
+    @Transactional
+    public UserResponseDto updateUser(
+            UserRequestDto userReq, Long userId) throws ResponseException {
         User user = userRep.findByUser(userId);
         user.updateDate(userReq);
-        userRep.save(user);
-        user = userRep.findByUser(userId);
         return user.to();
     }
 
     @Transactional
     public void deleteUser(Long userId) throws ResponseException {
         userRep.findByUser(userId);
-        commentRep.deleteByUserId(userId);
-        taskRep.deleteByUserId(userId);
+        commentService.deleteByUser(userId);
+        taskService.deleteByUser(userId);
         userRep.deleteById(userId);
-
     }
 
 }

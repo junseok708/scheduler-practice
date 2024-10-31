@@ -1,6 +1,5 @@
 package com.sparta.scheduler.domain.task.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +12,5 @@ public class TaskRequestDto {
     private String title;
     @NotEmpty(message = "올바르지 않는 일정입니다, 일정을 입력했는지 확인하세요")
     private String content;
-
 
 }

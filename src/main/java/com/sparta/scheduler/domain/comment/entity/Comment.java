@@ -17,14 +17,14 @@ public class Comment extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Column
     private String content;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id")
     private Task task;
 
@@ -35,7 +35,6 @@ public class Comment extends Timestamped {
         this.user = user;
         this.content = taskRequestDto.getContent();
         this.task = task;
-
     }
 
     public CommentResponseDto to() {

@@ -1,9 +1,7 @@
 package com.sparta.scheduler.domain.common.exception;
 
 import com.sparta.scheduler.domain.common.dto.ResponseStatusDto;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -16,6 +14,5 @@ public class GlobalExceptionHandler {
                 .status(ex.getResponseCode().getHttpStatus())
                 .body(new ResponseStatusDto(ex.getResponseCode()));
     }
-
 
 }

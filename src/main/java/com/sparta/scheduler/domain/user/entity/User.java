@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class User extends Timestamped {
     private String password;
 
 
-    @ManyToMany(mappedBy = "users",fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     private List<Task> tasks = new ArrayList<>();
 
 
@@ -40,7 +39,6 @@ public class User extends Timestamped {
         this.email = userRequestDto.getEmail();
         this.password = userRequestDto.getPassword();
     }
-
 
     public UserResponseDto to() {
         return new UserResponseDto(
@@ -58,4 +56,5 @@ public class User extends Timestamped {
         this.email = req.getEmail();
         this.password = req.getPassword();
     }
+
 }

@@ -1,6 +1,8 @@
 package com.sparta.scheduler.domain.task.entity;
 
 import com.sparta.scheduler.domain.comment.entity.Comment;
+import com.sparta.scheduler.domain.common.exception.ResponseCode;
+import com.sparta.scheduler.domain.common.exception.ResponseException;
 import com.sparta.scheduler.domain.common.timestamp.Timestamped;
 import com.sparta.scheduler.domain.task.dto.TaskRequestDto;
 import com.sparta.scheduler.domain.task.dto.TaskResponseDto;
@@ -40,6 +42,9 @@ public class Task extends Timestamped {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users = new ArrayList<>();
 
+
+
+
     public void init(TaskRequestDto taskRequestDto, User user) {
         this.user = user;
         this.title = taskRequestDto.getTitle();
@@ -62,4 +67,6 @@ public class Task extends Timestamped {
         this.title = req.getTitle();
         this.content = req.getContent();
     }
+
+
 }

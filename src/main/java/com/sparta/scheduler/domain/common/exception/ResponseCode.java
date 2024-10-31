@@ -9,13 +9,8 @@ import org.springframework.http.HttpStatus;
 public enum ResponseCode {
 
 
-    //성공 에러 코드
-
-    //리턴 에러 코드
-
-
-    //기타 에러 코드
-    BAD_INPUT(HttpStatus.BAD_REQUEST, "잘못된 값 입력"),
+    NOT_FOUND(HttpStatus.NOT_FOUND,"입력한 값이 없습니다, 다시 입력해주세요"),
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 값 입력"),
     UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 오류");
 
     private final HttpStatus httpStatus;

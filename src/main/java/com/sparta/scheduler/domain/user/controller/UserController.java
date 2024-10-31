@@ -25,7 +25,6 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(userService.createUser(userRequestDto));
-
     }
 
     @GetMapping("/userId={userId}")
@@ -43,7 +42,6 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.getAllUsers());
-
     }
 
     @PutMapping("/userId={userId}")
@@ -54,7 +52,6 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.updateUser(userRequestDto, userId));
-
     }
 
     @DeleteMapping("/userId={userId}")
@@ -65,7 +62,6 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
-
     }
 
 }

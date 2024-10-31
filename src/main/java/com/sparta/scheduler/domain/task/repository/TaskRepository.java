@@ -1,5 +1,7 @@
 package com.sparta.scheduler.domain.task.repository;
 
+import com.sparta.scheduler.domain.common.exception.ResponseCode;
+import com.sparta.scheduler.domain.common.exception.ResponseException;
 import com.sparta.scheduler.domain.task.entity.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,8 +13,9 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     default Task findByTask(Long id) {
         return findById(id).orElseThrow(() ->
-                new IllegalAccessError("존재하지 않는 회원입니다"));
+                new ResponseException(ResponseCode.BAD_REQUEST, "존재하지 않는 회원입니다"));
     }
+
     List<Task> findAllByUserId(Long userId);
 
     Page<Task> findAllByUserId(Long userId, Pageable pageable);

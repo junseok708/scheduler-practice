@@ -27,7 +27,6 @@ public class TaskController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(taskService.createTask(req, userId));
-
     }
 
     @GetMapping("/taskId={id}")
@@ -60,7 +59,7 @@ public class TaskController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(taskService.getAllTask(userId));
+                .body(taskService.getAllTasks(userId));
 
     }
 

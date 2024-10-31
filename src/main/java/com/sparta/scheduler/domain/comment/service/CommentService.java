@@ -4,6 +4,7 @@ import com.sparta.scheduler.domain.comment.dto.CommentRequestDto;
 import com.sparta.scheduler.domain.comment.dto.CommentResponseDto;
 import com.sparta.scheduler.domain.comment.entity.Comment;
 import com.sparta.scheduler.domain.comment.repository.CommentRepository;
+import com.sparta.scheduler.domain.common.exception.ExceptionMethod;
 import com.sparta.scheduler.domain.task.entity.Task;
 import com.sparta.scheduler.domain.task.repository.TaskRepository;
 import com.sparta.scheduler.domain.user.entity.User;
@@ -14,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class CommentService {
+public class CommentService extends ExceptionMethod {
 
     private final CommentRepository commentRep;
     private final TaskRepository taskRep;
@@ -22,10 +23,10 @@ public class CommentService {
 
 
     public CommentResponseDto createComment(
-            Long taskId, Long userId, CommentRequestDto commentRequestDto
-    ) {
-        Task task = taskRep.findByTask(taskId);
+            Long taskId, Long userId, CommentRequestDto commentRequestDto) {
+        isNull(commentRequestDto);
         User user = userRep.findByUser(userId);
+        Task task = taskRep.findByTask(taskId);
         Comment comment = new Comment();
         comment.init(commentRequestDto, task, user);
         commentRep.save(comment);
@@ -35,8 +36,7 @@ public class CommentService {
     @Transactional
     public CommentResponseDto updateComment(
             CommentRequestDto commentReq,
-            Long userId, Long taskId, Long commentId
-    ) {
+            Long userId, Long taskId, Long commentId) {
         userRep.findByUser(userId);
         Task task = taskRep.findByTask(taskId);
         Comment comment = commentRep.findByComment(commentId);
@@ -46,11 +46,14 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(
-            Long taskId, Long userId, Long commentId
-    ) {
+            Long taskId, Long userId, Long commentId) {
         taskRep.findByTask(taskId);
         userRep.findByUser(userId);
         Comment comment = commentRep.findByComment(commentId);
         commentRep.delete(comment);
+    }
+
+    public void deleteByUser(Long userId) {
+        commentRep.deleteByUserId(userId);
     }
 }

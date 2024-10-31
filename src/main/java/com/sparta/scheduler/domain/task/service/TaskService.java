@@ -1,5 +1,7 @@
 package com.sparta.scheduler.domain.task.service;
 
+import com.sparta.scheduler.domain.comment.repository.CommentRepository;
+import com.sparta.scheduler.domain.common.exception.ExceptionMethod;
 import com.sparta.scheduler.domain.task.dto.TaskRequestDto;
 import com.sparta.scheduler.domain.task.dto.TaskResponseDto;
 import com.sparta.scheduler.domain.task.dto.TaskResponsePage;
@@ -19,18 +21,19 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TaskService {
+public class TaskService extends ExceptionMethod {
 
     private final TaskRepository taskRep;
     private final UserRepository userRep;
+    private final CommentRepository commentRep;
 
     @Transactional
     public TaskResponseDto createTask(
             TaskRequestDto TaskReq, Long userId) {
+        isNull(TaskReq);
         User user = userRep.findByUser(userId);
         Task task = new Task();
         task.init(TaskReq, user);
-        taskRep.save(task);
         return task.to();
     }
 
@@ -42,7 +45,7 @@ public class TaskService {
     }
 
 
-    public List<TaskResponseDto> getAllTask(Long userId) {
+    public List<TaskResponseDto> getAllTasks(Long userId) {
         userRep.findByUser(userId);
         List<Task> tasks = taskRep.findAllByUserId(userId);
         return tasks
@@ -64,8 +67,9 @@ public class TaskService {
 
     @Transactional
     public void deleteTask(Long id, Long userId) {
-        userRep.findByUser(userId);
+        User user = userRep.findByUser(userId);
         taskRep.findByTask(id);
+        commentRep.deleteByTaskId(id);
         taskRep.deleteById(id);
     }
 
@@ -75,5 +79,9 @@ public class TaskService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, criteria));
         Page<Task> tasks = taskRep.findAllByUserId(userId, pageable);
         return new TaskResponsePage(tasks);
+    }
+
+    public void deleteByUser(Long userId) {
+        taskRep.deleteByUserId(userId);
     }
 }
