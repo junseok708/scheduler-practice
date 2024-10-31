@@ -13,7 +13,7 @@ public class UserRequestDto {
     @NotBlank(message = "올바른 이름이 아닙니다, 입력하지 않았거나 빈 공간이 있는지 확인하세요")
     private String name;
 
-    @Pattern(regexp = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.) + [a-zA-Z]{2,7}",
+    @Pattern(regexp = "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
             message = "올바른 이메일 형식이 아닙니다. ")
     private String email;
 

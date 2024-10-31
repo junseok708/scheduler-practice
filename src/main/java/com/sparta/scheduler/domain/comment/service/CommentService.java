@@ -23,7 +23,7 @@ public class CommentService extends ExceptionMethod {
 
 
     public CommentResponseDto createComment(
-            Long taskId, Long userId, CommentRequestDto commentRequestDto) {
+            Long userId, Long taskId, CommentRequestDto commentRequestDto) {
         isNull(commentRequestDto);
         User user = userRep.findByUser(userId);
         Task task = taskRep.findByTask(taskId);

@@ -9,7 +9,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     default Comment findByComment(Long id) {
         return findById(id).orElseThrow(()
-                -> new ResponseException(ResponseCode.BAD_INPUT,"존재하지 않는 회원입니다"));
+                -> new ResponseException(ResponseCode.BAD_REQUEST,"존재하지 않는 회원입니다"));
     }
 
     void deleteByUserId(Long userId);

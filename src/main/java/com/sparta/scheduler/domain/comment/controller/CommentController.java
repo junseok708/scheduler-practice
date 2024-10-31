@@ -19,13 +19,13 @@ public class CommentController {
 
     @PostMapping()
     public ResponseEntity<CommentResponseDto> createComment(
-            @PathVariable Long taskId,
             @PathVariable Long userId,
+            @PathVariable Long taskId,
             @RequestBody @Valid CommentRequestDto commentRequestDto) throws ResponseException {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(commentService.createComment(taskId, userId, commentRequestDto));
+                .body(commentService.createComment(userId, taskId, commentRequestDto));
     }
 
     @PutMapping("={commentId}")
